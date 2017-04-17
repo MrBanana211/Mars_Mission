@@ -2,6 +2,7 @@ int track(int signature) {
   static unsigned long lastBlockTime = 0;
   uint16_t blocks;
   blocks = pixy.getBlocks();
+  
   // If we have blocks in sight, track and follow them 
   if (blocks){
     int trackedBlock = TrackBlock(blocks, signature);

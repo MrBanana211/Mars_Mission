@@ -71,22 +71,28 @@ void FollowBlock(int trackedBlock) {
   }
 }
 
-//---------------------------------------
-// Random search for blocks
-//
-// This code pans back and forth at random until a block is detected //---------------------------------------
-int scanIncrement = (panLoop.m_maxPos - panLoop.m_minPos) / 150;
-uint32_t lastMove = 0;
+
+
 
 void ScanForBlocks() {
-if (millis() - lastMove > 20) {
-  lastMove = millis();
-  panLoop.m_pos += scanIncrement;
-    if ((panLoop.m_pos >= panLoop.m_maxPos)||(panLoop.m_pos <= panLoop.m_minPos)) {
-      tiltLoop.m_pos = random(tiltLoop.m_maxPos * 0.5, tiltLoop.m_maxPos); 
-      scanIncrement = -scanIncrement;
+  static int delta_pan = 10;
+  static int delta_tilt = 20;
+  static uint32_t lastMove = 0;
+  
+  if (millis() - lastMove > 20) {
+    lastMove = millis();
+    panLoop.m_pos += delta_pan;
+    
+      if ((tiltLoop.m_pos >= tiltLoop.m_maxPos)||(tiltLoop.m_pos <= tiltLoop.m_minPos)) {
+        delta_tilt = -delta_tilt;
       }
-  pixy.setServos(panLoop.m_pos, tiltLoop.m_pos);
+      
+      if ((panLoop.m_pos >= panLoop.m_maxPos)||(panLoop.m_pos <= panLoop.m_minPos)) {
+        delta_pan = -delta_pan;
+        tiltLoop.m_pos += delta_tilt;
+      }
+      
+    pixy.setServos(panLoop.m_pos, tiltLoop.m_pos);
   }
 }
 
