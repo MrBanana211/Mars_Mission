@@ -5,10 +5,12 @@ void collect() {
   digitalWrite(motorL1, HIGH); //forward to eat the ball
   digitalWrite(motorL2, LOW);
   analogWrite(motorLPWM, 255);
+  
   digitalWrite(motorR1, HIGH);
   digitalWrite(motorR2, LOW);
   analogWrite(motorRPWM, 255);
   delay(700);
+  
   closeDoor();
   ball++;
 

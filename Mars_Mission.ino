@@ -12,6 +12,8 @@
 #define THRESHOLD_CONTAINER 300
 #define DEFAULT_BLOB_SIZE 200
 
+
+//All pins
 const int motorL1 = 9;
 const int motorL2 = 8;
 const int motorLPWM = 6;
@@ -34,12 +36,6 @@ enum State {
   };
 
 State state = BALL;
-
-const int PUSHF = 110;
-const int PUSHR = 111;
-const int PUSHS = 112;
-int PUSH = PUSHF;
-
 int ball = 0;
 
 Servo doorservo;
@@ -71,7 +67,7 @@ void loop()
       collect();
       break;
   
-    case CONTAINER: //TrackBlock(blocks, 2)
+    case CONTAINER:
       findContainer();
       break;
   
