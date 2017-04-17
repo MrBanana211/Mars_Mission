@@ -10,6 +10,7 @@
 #define SIGNATURE_CONTAINER 2
 #define THRESHOLD_BALL 300 
 #define THRESHOLD_CONTAINER 300
+#define DEFAULT_BLOB_SIZE 200
 
 const int motorL1 = 9;
 const int motorL2 = 8;

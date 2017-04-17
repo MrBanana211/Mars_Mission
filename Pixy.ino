@@ -1,15 +1,14 @@
 int TrackBlock(int blockCount, int targetSignature)
 {
-  static int oldX, oldY;
   int trackedBlock = 0;
-  long maxSize = 0;
+  long maxblobSize = 0;
   
   for (int i = 0; i < blockCount; i++) {
     if (pixy.blocks[i].signature == targetSignature) {
-      long newSize = pixy.blocks[i].height * pixy.blocks[i].width;
-      if (newSize > maxSize){
+      long newblobSize = pixy.blocks[i].height * pixy.blocks[i].width;
+      if (newblobSize > maxblobSize){
         trackedBlock = i;
-        maxSize = newSize; 
+        maxblobSize = newblobSize; 
       }
     }
   }
@@ -21,9 +20,6 @@ int TrackBlock(int blockCount, int targetSignature)
   tiltLoop.update(tiltError);
   
   pixy.setServos(panLoop.m_pos, tiltLoop.m_pos);
-  
-  oldX = pixy.blocks[trackedBlock].x;
-  oldY = pixy.blocks[trackedBlock].y;
 
   return trackedBlock;
 }
@@ -31,23 +27,23 @@ int TrackBlock(int blockCount, int targetSignature)
 
 
 void FollowBlock(int trackedBlock) {
-  static int32_t size = 200;
-  int32_t followError = panLoop.m_pos - panLoop.m_centerPos; // How far off-center are we looking now?
-  // Size is the area of the object.
-  // We keep a running average of the last 8.
-  size += pixy.blocks[trackedBlock].width * pixy.blocks[trackedBlock].height; 
-  size -= size >> 3;
   
-  // Forward speed decreases as we approach the object (size is larger) 
-  int forwardSpeed = constrain(200 - (size/256), -100, 200);
+  static int32_t blobSize = DEFAULT_BLOB_blobSize;
+  int32_t panError = panLoop.m_pos - panLoop.m_centerPos; // How far off-center are we looking now?
+
+  blobSize += pixy.blocks[trackedBlock].width * pixy.blocks[trackedBlock].height; 
+  blobSize -= blobSize >> 3; // minus 1/8 of blobSize
+  
+  // Forward speed decreases as we approach the object (blobSize is larger) 
+  int forwardSpeed = constrain(200 - (blobSize/256), -100, 200);
   
   // Steering differential is proportional to the error times the forward speed 
-  int32_t differential = (followError + (followError * forwardSpeed)) >> 8;
+  int32_t differential = (panError + (panError * forwardSpeed)) >> 8;
   differential /= 2;
   
   // Adjust the left and right speeds by the steering differential.
-  int leftSpeed = constrain(forwardSpeed + differential, -180, 180); //forward + diff
-  int rightSpeed = constrain(forwardSpeed - differential, -180, 180); //forward - diff
+  int leftSpeed = constrain(forwardSpeed + differential, -200, 200); //forward + diff
+  int rightSpeed = constrain(forwardSpeed - differential, -200, 200); //forward - diff
   
   if (leftSpeed >= 0){
     digitalWrite(motorL1, HIGH);
