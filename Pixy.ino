@@ -28,7 +28,7 @@ int TrackBlock(int blockCount, int targetSignature)
 
 void FollowBlock(int trackedBlock) {
   
-  static int32_t blobSize = DEFAULT_BLOB_blobSize;
+  static int32_t blobSize = DEFAULT_BLOB_SIZE;
   int32_t panError = panLoop.m_pos - panLoop.m_centerPos; // How far off-center are we looking now?
 
   blobSize += pixy.blocks[trackedBlock].width * pixy.blocks[trackedBlock].height; 
@@ -71,24 +71,27 @@ void FollowBlock(int trackedBlock) {
 
 
 void ScanForBlocks() {
-  static int delta_pan = 10;
-  static int delta_tilt = 20;
-  static uint32_t lastMove = 0;
+  static int32_t delta_pan = 15L;
+  static int32_t delta_tilt = 80L;
+  static uint32_t lastMove = 0L;
   
   if (millis() - lastMove > 20) {
     lastMove = millis();
     panLoop.m_pos += delta_pan;
     
+    if ((panLoop.m_pos >= panLoop.m_maxPos)||(panLoop.m_pos <= panLoop.m_minPos)) {
+      delta_pan = -delta_pan;
+
       if ((tiltLoop.m_pos >= tiltLoop.m_maxPos)||(tiltLoop.m_pos <= tiltLoop.m_minPos)) {
         delta_tilt = -delta_tilt;
       }
-      
-      if ((panLoop.m_pos >= panLoop.m_maxPos)||(panLoop.m_pos <= panLoop.m_minPos)) {
-        delta_pan = -delta_pan;
-        tiltLoop.m_pos += delta_tilt;
-      }
+      tiltLoop.m_pos += delta_tilt;
+    }
       
     pixy.setServos(panLoop.m_pos, tiltLoop.m_pos);
+    Serial.print(delta_tilt);
+    Serial.print("\t");
+    Serial.println(tiltLoop.m_pos);
   }
 }
 

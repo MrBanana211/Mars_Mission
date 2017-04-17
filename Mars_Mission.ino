@@ -14,7 +14,7 @@
 
 
 //All pins
-const int motorL1 = 9;
+const int motorL1 = 7;
 const int motorL2 = 8;
 const int motorLPWM = 6;
 
@@ -41,7 +41,7 @@ int ball = 0;
 Servo doorservo;
 Pixy pixy;
 ServoLoop panLoop(200, 200, 0L, 1000L, 500L); //servoloop(kp, kd, min, max, center)
-ServoLoop tiltLoop(150, 200, 0L, 400L, 200L); 
+ServoLoop tiltLoop(150, 200, 0L, 300L, 150L); 
 
 void setup()
 {
