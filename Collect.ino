@@ -2,7 +2,7 @@ void collect() {
   
   openDoor();
   stopMove();
-  delay(200);iu
+  delay(200);
   digitalWrite(motorL1, HIGH); //forward to eat the ball
   digitalWrite(motorL2, LOW);
   analogWrite(motorLPWM, 100);

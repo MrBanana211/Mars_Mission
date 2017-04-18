@@ -47,7 +47,7 @@ ServoLoop tiltLoop(150, 200, 100L, 300L, 200L);
 void setup()
 {
   if(DEBUG) {
-    Serial.begin(9600);
+    Serial.begin(38400);
     Serial.print("Starting...\n");
   }
   
