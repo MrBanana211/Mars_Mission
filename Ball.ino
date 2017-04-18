@@ -1,7 +1,8 @@
 void findBall() {
-    if( track(SIGNATURE_BALL) > THRESHOLD_BALL){ //next state
+    int ballSize = track(SIGNATURE_BALL);
+    Serial.println(ballSize);
+    if( ballSize > THRESHOLD_BALL){ //next state
       state = COLLECT;
-
       if(DEBUG)
         Serial.println("Ball->COLLECT");
     }

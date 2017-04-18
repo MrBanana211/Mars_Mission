@@ -8,10 +8,10 @@
 #define DELAY_DOOR 30
 #define SIGNATURE_BALL 1
 #define SIGNATURE_CONTAINER 2
-#define THRESHOLD_BALL 300 
+#define THRESHOLD_BALL 4000 
 #define THRESHOLD_CONTAINER 300
 #define DEFAULT_BLOB_SIZE 200
-
+#define SPEED 120
 
 //All pins
 const int motorL1 = 7;
@@ -32,7 +32,8 @@ enum State {
     BALL,
     COLLECT,
     CONTAINER,
-    EMPTY
+    EMPTY,
+    HALT
   };
 
 State state = BALL;
@@ -41,7 +42,7 @@ int ball = 0;
 Servo doorservo;
 Pixy pixy;
 ServoLoop panLoop(200, 200, 0L, 1000L, 500L); //servoloop(kp, kd, min, max, center)
-ServoLoop tiltLoop(150, 200, 0L, 300L, 150L); 
+ServoLoop tiltLoop(150, 200, 100L, 300L, 200L); 
 
 void setup()
 {
@@ -61,6 +62,10 @@ void loop()
   switch(state) {
     case BALL:
       findBall();
+      break;
+
+    case HALT:
+      stopMove();
       break;
   
     case COLLECT:

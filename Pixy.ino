@@ -35,15 +35,15 @@ void FollowBlock(int trackedBlock) {
   blobSize -= blobSize >> 3; // minus 1/8 of blobSize
   
   // Forward speed decreases as we approach the object (blobSize is larger) 
-  int forwardSpeed = constrain(200 - (blobSize/256), -100, 200);
-  
+  //int forwardSpeed = constrain(200 - (blobSize/256), -100, 200);
+  int forwardSpeed = 140;
   // Steering differential is proportional to the error times the forward speed 
   int32_t differential = (panError + (panError * forwardSpeed)) >> 8;
-  differential /= 2;
+  //differential /= 2;
   
   // Adjust the left and right speeds by the steering differential.
-  int leftSpeed = constrain(forwardSpeed + differential, -200, 200); //forward + diff
-  int rightSpeed = constrain(forwardSpeed - differential, -200, 200); //forward - diff
+  int leftSpeed = constrain(forwardSpeed + differential, -SPEED, SPEED); //forward + diff
+  int rightSpeed = constrain(forwardSpeed - differential, -SPEED, SPEED); //forward - diff
   
   if (leftSpeed >= 0){
     digitalWrite(motorL1, HIGH);
@@ -71,8 +71,8 @@ void FollowBlock(int trackedBlock) {
 
 
 void ScanForBlocks() {
-  static int32_t delta_pan = 15L;
-  static int32_t delta_tilt = 80L;
+  static int32_t delta_pan = 8L;
+  static int32_t delta_tilt = 50L;
   static uint32_t lastMove = 0L;
   
   if (millis() - lastMove > 20) {
@@ -89,9 +89,11 @@ void ScanForBlocks() {
     }
       
     pixy.setServos(panLoop.m_pos, tiltLoop.m_pos);
+    /*
     Serial.print(delta_tilt);
     Serial.print("\t");
     Serial.println(tiltLoop.m_pos);
+    */
   }
 }
 
