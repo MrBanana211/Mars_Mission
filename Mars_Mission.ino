@@ -35,7 +35,7 @@ enum State {
     EMPTY,
     HALT
   };
-
+ // add a comment
 State state = BALL;
 int ball = 0;
 
