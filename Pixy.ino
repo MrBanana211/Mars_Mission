@@ -15,28 +15,29 @@ int TrackBlock(int blockCount, int targetSignature)
   
   int32_t panError = X_CENTER - pixy.blocks[trackedBlock].x; 
   int32_t tiltError = pixy.blocks[trackedBlock].y - Y_CENTER;
-  
-  panLoop.update(panError);
-  tiltLoop.update(tiltError);
-  
-  pixy.setServos(panLoop.m_pos, tiltLoop.m_pos);
-
+  if(maxblobSize > MIN_BLOB_SIZE) {
+    panLoop.update(panError);
+    tiltLoop.update(tiltError);
+    
+    pixy.setServos(panLoop.m_pos, tiltLoop.m_pos);
+  }
   return trackedBlock;
 }
 
 
 
 void FollowBlock(int trackedBlock) {
-  
-  static int32_t blobSize = DEFAULT_BLOB_SIZE;
   int32_t panError = panLoop.m_pos - panLoop.m_centerPos; // How far off-center are we looking now?
-
-  blobSize += pixy.blocks[trackedBlock].width * pixy.blocks[trackedBlock].height; 
-  blobSize -= blobSize >> 3; // minus 1/8 of blobSize
-  
-  // Forward speed decreases as we approach the object (blobSize is larger) 
-  //int forwardSpeed = constrain(200 - (blobSize/256), -100, 200);
+  int32_t blobSize = pixy.blocks[trackedBlock].width * pixy.blocks[trackedBlock].height;
   int forwardSpeed = 140;
+
+  if( blobSize >= THRESHOLD_BALL) {
+    forwardSpeed = 0;
+    Serial.println("Align.");
+    
+  }
+    
+    
   // Steering differential is proportional to the error times the forward speed 
   int32_t differential = (panError + (panError * forwardSpeed)) >> 8;
   //differential /= 2;
@@ -71,7 +72,7 @@ void FollowBlock(int trackedBlock) {
 
 
 void ScanForBlocks() {
-  static int32_t delta_pan = 8L;
+  static int32_t delta_pan = 10L;
   static int32_t delta_tilt = 50L;
   static uint32_t lastMove = 0L;
   

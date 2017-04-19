@@ -11,6 +11,7 @@
 #define THRESHOLD_BALL 4000 
 #define THRESHOLD_CONTAINER 300
 #define DEFAULT_BLOB_SIZE 200
+#define MIN_BLOB_SIZE 10
 #define SPEED 120
 
 //All pins
@@ -47,10 +48,9 @@ ServoLoop tiltLoop(150, 200, 100L, 300L, 200L);
 void setup()
 {
   if(DEBUG) {
-    Serial.begin(38400);
+    Serial.begin(9600);
     Serial.print("Starting...\n");
   }
-  
   pixy.init();
   doorservo.attach(10);
   pinMode(switchf, INPUT_PULLUP);
@@ -59,25 +59,25 @@ void setup()
 
 void loop()
 {
-  switch(state) {
-    case BALL:
-      findBall();
-      break;
-
-    case HALT:
-      stopMove();
-      break;
+    switch(state) {
+      case BALL:
+        findBall();
+        break;
   
-    case COLLECT:
-      collect();
-      break;
-  
-    case CONTAINER:
-      findContainer();
-      break;
-  
-    case EMPTY:
-      empty();
-      break;
-  }
+      case HALT:
+        stopMove();
+        break;
+    
+      case COLLECT:
+        collect();
+        break;
+    
+      case CONTAINER:
+        findContainer();
+        break;
+    
+      case EMPTY:
+        empty();
+        break;
+    }
 }

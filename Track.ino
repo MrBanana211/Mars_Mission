@@ -2,16 +2,18 @@ int track(int signature) {
   static unsigned long lastBlockTime = 0;
   uint16_t blocks;
   blocks = pixy.getBlocks();
+  int blobSize = 0;
   
   // If we have blocks in sight, track and follow them 
   if (blocks){
     int trackedBlock = TrackBlock(blocks, signature);
-    FollowBlock(trackedBlock);
-    lastBlockTime = millis();
-    return pixy.blocks[trackedBlock].width * pixy.blocks[trackedBlock].height;
-    
+    blobSize = pixy.blocks[trackedBlock].width * pixy.blocks[trackedBlock].height; 
+    if(blobSize > MIN_BLOB_SIZE) {
+      FollowBlock(trackedBlock);
+      lastBlockTime = millis();
+    }
   }
-  else if(millis() - lastBlockTime > 100) {
+  if(millis() - lastBlockTime > 100) {
 
     digitalWrite(motorL1, HIGH);
     digitalWrite(motorL2, LOW);
@@ -21,7 +23,9 @@ int track(int signature) {
     digitalWrite(motorR2, LOW);
     analogWrite(motorRPWM, 0);
     ScanForBlocks();
-  } 
+  }
+
+   return blobSize;
   /*
   else if(millis() > TIMEOUT){ //no time state
     state = CONTAINER;
