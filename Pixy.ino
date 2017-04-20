@@ -72,7 +72,7 @@ void FollowBlock(int trackedBlock) {
 
 
 void ScanForBlocks() {
-  static int32_t delta_pan = 10L;
+  static int32_t delta_pan = 15L;
   static int32_t delta_tilt = 50L;
   static uint32_t lastMove = 0L;
   
@@ -90,11 +90,11 @@ void ScanForBlocks() {
     }
       
     pixy.setServos(panLoop.m_pos, tiltLoop.m_pos);
-    /*
-    Serial.print(delta_tilt);
+    
+    Serial.print(panLoop.m_pos);
     Serial.print("\t");
     Serial.println(tiltLoop.m_pos);
-    */
+    
   }
 }
 

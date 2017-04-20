@@ -26,9 +26,4 @@ int track(int signature) {
   }
 
    return blobSize;
-  /*
-  else if(millis() > TIMEOUT){ //no time state
-    state = CONTAINER;
-  }
-  */
 }
