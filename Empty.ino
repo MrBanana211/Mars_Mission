@@ -2,6 +2,7 @@ void empty() {
   openDoor();
   pushForward();
   pushBack();
+  closeContainer();
 }
 
 void pushForward() {

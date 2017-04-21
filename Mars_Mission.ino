@@ -8,7 +8,7 @@
 #define DELAY_DOOR 30
 #define SIGNATURE_BALL 1
 #define SIGNATURE_CONTAINER 2
-#define THRESHOLD_BALL 6000 
+#define THRESHOLD_BALL 3000
 #define THRESHOLD_CONTAINER 300
 #define DEFAULT_BLOB_SIZE 200
 #define MIN_BLOB_SIZE 10
@@ -43,7 +43,7 @@ int ball = 0;
 Servo doorservo;
 Pixy pixy;
 ServoLoop panLoop(350, 600, 0L, 1000L, 500L); //servoloop(kp, kd, min, max, center)
-ServoLoop tiltLoop(500, 700, 100L, 400L, 200L); 
+ServoLoop tiltLoop(500, 900, 100L, 400L, 200L); 
 
 void setup()
 {
@@ -59,6 +59,7 @@ void setup()
 
 void loop()
 {
+
     switch(state) {
       case BALL:
         findBall();
