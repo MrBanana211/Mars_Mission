@@ -12,39 +12,22 @@ int TrackBlock(int blockCount, int targetSignature)
       }
     }
   }
-  
-  int32_t panError = X_CENTER - pixy.blocks[trackedBlock].x; 
-  int32_t tiltError = pixy.blocks[trackedBlock].y - Y_CENTER;
-  if(maxblobSize > MIN_BLOB_SIZE) {
-    panLoop.update(panError);
-    tiltLoop.update(tiltError);
-    
-    pixy.setServos(panLoop.m_pos, tiltLoop.m_pos);
-  }
   return trackedBlock;
 }
 
 
 
 void FollowBlock(int trackedBlock) {
-  int32_t panError = panLoop.m_pos - panLoop.m_centerPos; // How far off-center are we looking now?
   int32_t blobSize = pixy.blocks[trackedBlock].width * pixy.blocks[trackedBlock].height;
   int forwardSpeed = 140;
-
-  if( blobSize >= THRESHOLD_BALL) {
-    forwardSpeed = 0;
-    Serial.println("Align.");
     
-  }
-    
-    
-  // Steering differential is proportional to the error times the forward speed 
-  int32_t differential = (panError + (panError * forwardSpeed)) >> 8;
+  // Steering differential is proportional to the off center value
+  int32_t differential = 160 - pixy.blocks[trackedBlock].x;
   //differential /= 2;
   
   // Adjust the left and right speeds by the steering differential.
-  int leftSpeed = constrain(forwardSpeed + differential, -SPEED, SPEED); //forward + diff
-  int rightSpeed = constrain(forwardSpeed - differential, -SPEED, SPEED); //forward - diff
+  int leftSpeed = constrain(forwardSpeed - differential, -SPEED, SPEED);
+  int rightSpeed = constrain(forwardSpeed + differential, -SPEED, SPEED);
   
   if (leftSpeed >= 0){
     digitalWrite(motorL1, HIGH);
@@ -72,29 +55,6 @@ void FollowBlock(int trackedBlock) {
 
 
 void ScanForBlocks() {
-  static int32_t delta_pan = 15L;
-  static int32_t delta_tilt = 50L;
-  static uint32_t lastMove = 0L;
-  
-  if (millis() - lastMove > 20) {
-    lastMove = millis();
-    panLoop.m_pos += delta_pan;
-    
-    if ((panLoop.m_pos >= panLoop.m_maxPos)||(panLoop.m_pos <= panLoop.m_minPos)) {
-      delta_pan = -delta_pan;
 
-      if ((tiltLoop.m_pos >= tiltLoop.m_maxPos)||(tiltLoop.m_pos <= tiltLoop.m_minPos)) {
-        delta_tilt = -delta_tilt;
-      }
-      tiltLoop.m_pos += delta_tilt;
-    }
-      
-    pixy.setServos(panLoop.m_pos, tiltLoop.m_pos);
-    
-    Serial.print(panLoop.m_pos);
-    Serial.print("\t");
-    Serial.println(tiltLoop.m_pos);
-    
-  }
 }
 

@@ -1,7 +1,6 @@
 #include <SPI.h>
 #include <Pixy.h>
 #include <Servo.h>
-#include "Servoloop.h"
 
 #define DEBUG true
 #define TIMEOUT 40*1000
@@ -42,8 +41,6 @@ int ball = 0;
 
 Servo doorservo;
 Pixy pixy;
-ServoLoop panLoop(350, 600, 0L, 1000L, 500L); //servoloop(kp, kd, min, max, center)
-ServoLoop tiltLoop(500, 700, 100L, 400L, 200L); 
 
 void setup()
 {
