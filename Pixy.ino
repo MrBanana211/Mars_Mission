@@ -29,6 +29,7 @@ void FollowBlock(int trackedBlock) {
   int leftSpeed = constrain(forwardSpeed - 0.8*differential, -SPEED, SPEED);
   int rightSpeed = constrain(forwardSpeed + 0.8*differential, -SPEED, SPEED);
 
+  Serial.println(pixy.blocks[trackedBlock].y);
 //  Serial.print(pixy.blocks[trackedBlock].x);
 //  Serial.print("\t");
 //  Serial.println(leftSpeed);

@@ -13,6 +13,7 @@ int track(int signature) {
       lastBlockTime = millis();
     }
   }
+  /*
   if(millis() - lastBlockTime > 100) {
 
     stopMove();
@@ -29,6 +30,6 @@ int track(int signature) {
     
     ScanForBlocks();
   }
-
+*/
    return blobSize;
 }
