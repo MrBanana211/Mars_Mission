@@ -7,11 +7,11 @@
 #define DELAY_DOOR 30
 #define SIGNATURE_BALL 1
 #define SIGNATURE_CONTAINER 2
-#define THRESHOLD_BALL 6000 
+#define THRESHOLD_BALL 1500 
 #define THRESHOLD_CONTAINER 300
 #define DEFAULT_BLOB_SIZE 200
 #define MIN_BLOB_SIZE 10
-#define SPEED 120
+#define SPEED 140
 
 //All pins
 const int motorL1 = 7;
