@@ -15,13 +15,18 @@ int track(int signature) {
   }
   if(millis() - lastBlockTime > 100) {
 
-    digitalWrite(motorL1, HIGH);
-    digitalWrite(motorL2, LOW);
-    analogWrite(motorLPWM, 0);
+    stopMove();
 
-    digitalWrite(motorR1, HIGH);
-    digitalWrite(motorR2, LOW);
-    analogWrite(motorRPWM, 0);
+    digitalWrite(motorL1, LOW); //move backwoard for more space
+    digitalWrite(motorL2, HIGH);
+    analogWrite(motorLPWM, 200);
+
+    digitalWrite(motorR1, LOW);
+    digitalWrite(motorR2, HIGH);
+    analogWrite(motorRPWM, 200);
+
+    delay(1000);
+    
     ScanForBlocks();
   }
 

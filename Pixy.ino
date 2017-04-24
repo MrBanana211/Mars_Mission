@@ -59,5 +59,18 @@ void FollowBlock(int trackedBlock) {
 
 void ScanForBlocks() {
 
+    static uint32_t lastMove = 0L;
+
+  if (millis() - lastMove > 20) {
+    lastMove = millis();
+    
+    digitalWrite(motorR1, HIGH);
+    digitalWrite(motorR2, LOW);
+    analogWrite(motorRPWM, 80);
+
+    digitalWrite(motorL1, LOW);
+    digitalWrite(motorL2, HIGH);
+    analogWrite(motorLPWM, 80);
+  }
 }
 
