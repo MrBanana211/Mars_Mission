@@ -23,7 +23,6 @@ void FollowBlock(int trackedBlock) {
     
   // Steering differential is proportional to the off center value
   int32_t differential = 160 - pixy.blocks[trackedBlock].x;
-  //differential /= 2;
   
   // Adjust the left and right speeds by the steering differential.
   int leftSpeed = constrain(forwardSpeed - differential, -SPEED, SPEED);
