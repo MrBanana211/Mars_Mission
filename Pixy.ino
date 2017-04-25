@@ -12,6 +12,7 @@ int TrackBlock(int blockCount, int targetSignature)
       }
     }
   }
+
   return trackedBlock;
 }
 
@@ -65,13 +66,14 @@ void ScanForBlocks() {
   if (millis() - lastMove > 20) {
     lastMove = millis();
     
-    digitalWrite(motorR1, HIGH);
-    digitalWrite(motorR2, LOW);
-    analogWrite(motorRPWM, 80);
+    digitalWrite(motorR1, LOW);
+    digitalWrite(motorR2, HIGH);
+    analogWrite(motorRPWM, 100);
 
-    digitalWrite(motorL1, LOW);
-    digitalWrite(motorL2, HIGH);
-    analogWrite(motorLPWM, 80);
+    digitalWrite(motorL1, HIGH);
+    digitalWrite(motorL2, LOW);
+    analogWrite(motorLPWM, 100
+    );
   }
 }
 

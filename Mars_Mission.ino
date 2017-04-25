@@ -7,7 +7,7 @@
 #define DELAY_DOOR 30
 #define SIGNATURE_BALL 1
 #define SIGNATURE_CONTAINER 2
-#define THRESHOLD_BALL 1500 
+#define THRESHOLD_Y 180 
 #define THRESHOLD_CONTAINER 300
 #define DEFAULT_BLOB_SIZE 200
 #define MIN_BLOB_SIZE 10
@@ -28,6 +28,13 @@ const int motorPPWM = 2;
 const int switchf = 40;
 const int switchr = 41;
 
+int blob_x;
+int blob_y;
+int blobSize;
+int ballCount = 0;
+
+bool doorClosed = true;
+
 enum State {
     BALL,
     COLLECT,
@@ -37,7 +44,6 @@ enum State {
   };
  // add a comment
 State state = BALL;
-int ball = 0;
 
 Servo doorservo;
 Pixy pixy;
@@ -50,6 +56,7 @@ void setup()
   }
   pixy.init();
   doorservo.attach(10);
+  doorservo.write(110);
   pinMode(switchf, INPUT_PULLUP);
   pinMode(switchr, INPUT_PULLUP);
 }
@@ -66,11 +73,12 @@ void loop()
         break;
     
       case COLLECT:
-        collect();
+        collectBall();
         break;
     
       case CONTAINER:
-        findContainer();
+        //findContainer();
+        stopMove();
         break;
     
       case EMPTY:

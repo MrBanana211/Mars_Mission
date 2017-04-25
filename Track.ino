@@ -1,18 +1,22 @@
-int track(int signature) {
+bool track(int signature) {
   static unsigned long lastBlockTime = 0;
   uint16_t blocks;
   blocks = pixy.getBlocks();
-  int blobSize = 0;
   
   // If we have blocks in sight, track and follow them 
   if (blocks){
     int trackedBlock = TrackBlock(blocks, signature);
-    blobSize = pixy.blocks[trackedBlock].width * pixy.blocks[trackedBlock].height; 
+    blobSize = pixy.blocks[trackedBlock].width * pixy.blocks[trackedBlock].height;
+    blob_x = pixy.blocks[trackedBlock].x;
+    blob_y = pixy.blocks[trackedBlock].y;
+   
     if(blobSize > MIN_BLOB_SIZE) {
       FollowBlock(trackedBlock);
       lastBlockTime = millis();
+      return true;
     }
   }
+  return false;
   /*
   if(millis() - lastBlockTime > 100) {
 
@@ -31,5 +35,4 @@ int track(int signature) {
     ScanForBlocks();
   }
 */
-   return blobSize;
 }

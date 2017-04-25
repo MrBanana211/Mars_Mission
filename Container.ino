@@ -1,5 +1,6 @@
 void findContainer() {
-  if( track(SIGNATURE_CONTAINER) > THRESHOLD_CONTAINER){
+  track(SIGNATURE_CONTAINER);
+  if(blobSize > THRESHOLD_CONTAINER){
     openContainer();
     state = EMPTY;
 

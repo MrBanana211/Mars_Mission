@@ -1,29 +1,19 @@
-void collect() {
-  
-  openDoor();
-  stopMove();
-  delay(3000);
-  digitalWrite(motorL1, HIGH); //forward to eat the ball
-  digitalWrite(motorL2, LOW);
-  analogWrite(motorLPWM, 80);
-  
-  digitalWrite(motorR1, HIGH);
-  digitalWrite(motorR2, LOW);
-  analogWrite(motorRPWM, 80);
-  delay(800);
-  stopMove();
-  closeDoor();
-  ball++;
-  //state = HALT;
-  delay(500);
-  
-  if (ball == 3){
-    state = HALT;
+void collectBall() {
+  if(track(SIGNATURE_BALL)) {
+    Serial.println(blob_y); 
+    openDoor();
+  } else if(blob_y > 190){
+      delay(500);
+      if(closeDoor())
+        ballCount++;
+      if(ballCount == 3) {
+        state = CONTAINER;
+        Serial.println("COLLECT >>> CONTAINER");
+      } else {
+        state = BALL;
+        Serial.println("COLLECT >>> BALL");
+      }
   }
-  else if (ball < 3){
-    state = BALL;
-  } 
-  
 }
 
 void stopMove() {
@@ -37,12 +27,22 @@ void stopMove() {
 }
 
 
-void openDoor() {
-    doorservo.write(0); //change number here
-    delay(DELAY_DOOR);
+bool openDoor() {
+    if(doorClosed) {
+      doorservo.write(50); //change number here
+      Serial.println("Opened door.");
+      doorClosed = false;
+      return true;
+    }
+    return false;
 }
 
-void closeDoor() {
-    doorservo.write(150); //change number here
-    delay(DELAY_DOOR);
+bool closeDoor() {
+    if(!doorClosed) {
+      doorservo.write(110); //change number here
+      Serial.println("Closed door.");
+      doorClosed = true;
+      return true;
+    }
+    return false;
 }
