@@ -1,11 +1,16 @@
 void findContainer() {
-  track(SIGNATURE_CONTAINER);
-  if(blobSize > THRESHOLD_CONTAINER){
-    openContainer();
-    state = EMPTY;
-
+  if(track(SIGNATURE_CONTAINER)){
     if(DEBUG)
-      Serial.println("CONTAINER->EMPTY");
+      Serial.println(blobSize);
+      
+    if(blobSize > THRESHOLD_CONTAINER){
+      //openContainer();
+      state = EMPTY;
+      if(DEBUG)
+        Serial.println("CONTAINER->EMPTY");
+    }
+  } else {
+    ScanForBlocks();
   }
 }
 

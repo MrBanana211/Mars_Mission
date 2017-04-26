@@ -1,32 +1,34 @@
 void empty() {
+  stopMove();
   openDoor();
-  pushForward();
-  pushBack();
+  pushOut();
+  moveMotor(-200, -200);
+  delay(500);
+  stopMove();
+  closeDoor();
+  moveMotor(200, 200);
+  delay(500);
+  stopMove();
   closeContainer();
+  pushIn();
+  state = HALT;
 }
 
-void pushForward() {
-  digitalWrite(motorP1, HIGH);
-  digitalWrite(motorP2, LOW);
-  analogWrite(motorPPWM, 255);
-
-  while(digitalRead(switchf));
+void pushOut() {
+  digitalWrite(switchF, HIGH);
+  while(digitalRead(switchF));
   stopPush();
 }
 
-void pushBack() {
-  digitalWrite(motorP1, LOW);
-  digitalWrite(motorP2, HIGH);
-  analogWrite(motorPPWM, 255);
-
-  while(digitalRead(switchr));
+void pushIn() {
+  digitalWrite(switchR, HIGH);
+  while(digitalRead(switchR));
   stopPush();
 }
 
 void stopPush() {
-  digitalWrite(motorP1, LOW);
-  digitalWrite(motorP2, LOW);
-  analogWrite(motorPPWM, 0);
+  digitalWrite(switchF, LOW);
+  digitalWrite(switchR, LOW);
 }
 
 

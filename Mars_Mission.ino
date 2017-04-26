@@ -2,13 +2,15 @@
 #include <Pixy.h>
 #include <Servo.h>
 
-#define DEBUG true
+#define DEBUG false
 #define TIMEOUT 40*1000
 #define DELAY_DOOR 30
+#define SERVO_CLOSE 100
+#define SERVO_OPEN 0
 #define SIGNATURE_BALL 1
 #define SIGNATURE_CONTAINER 2
 #define THRESHOLD_Y 180 
-#define THRESHOLD_CONTAINER 300
+#define THRESHOLD_CONTAINER 24000
 #define DEFAULT_BLOB_SIZE 200
 #define MIN_BLOB_SIZE 10
 #define SPEED 140
@@ -22,18 +24,15 @@ const int motorR1 = 12;
 const int motorR2 = 13;
 const int motorRPWM = 11;
 
-const int motorP1 = 3;
-const int motorP2 = 4;
-const int motorPPWM = 2;
-const int switchf = 40;
-const int switchr = 41;
+const int switchF = 3;
+const int switchR = 4;
 
 int blob_x;
 int blob_y;
 int blobSize;
 int ballCount = 0;
 
-bool doorClosed = true;
+bool doorClosed;
 
 enum State {
     BALL,
@@ -43,22 +42,34 @@ enum State {
     HALT
   };
  // add a comment
-State state = BALL;
+State state;
 
 Servo doorservo;
 Pixy pixy;
 
 void setup()
 {
+  
   if(DEBUG) {
     Serial.begin(9600);
     Serial.print("Starting...\n");
   }
   pixy.init();
   doorservo.attach(10);
-  doorservo.write(110);
-  pinMode(switchf, INPUT_PULLUP);
-  pinMode(switchr, INPUT_PULLUP);
+  
+  pinMode(switchF, OUTPUT);
+  pinMode(switchR, OUTPUT);
+
+  doorClosed = false;
+  state = BALL;
+  
+  closeDoor();
+  pushIn();
+  stopMove();
+  stopPush();
+
+  if(DEBUG)
+    Serial.print("Ready\n");
 }
 
 void loop()
@@ -77,8 +88,7 @@ void loop()
         break;
     
       case CONTAINER:
-        //findContainer();
-        stopMove();
+        findContainer();
         break;
     
       case EMPTY:
