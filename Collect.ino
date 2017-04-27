@@ -5,7 +5,7 @@ void collectBall() {
     FollowBlock(trackedBlock);
     openDoor();
   } else if(blob_y > 190){
-      delay(500);
+      delay(400);
       if(closeDoor()) {
         ballCount++;
         foundBlob = false;

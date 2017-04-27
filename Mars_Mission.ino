@@ -1,18 +1,16 @@
 #include <SPI.h>
 #include <Pixy.h>
 #include <Servo.h>
+#include <IRremote.h>
 
-#define DEBUG 
 
-true
+#define DEBUG true
 #define TIMEOUT 40*1000
 #define DELAY_DOOR 30
 #define SERVO_CLOSE 100
 #define SERVO_OPEN 0
 #define SIGNATURE_BALL 1
 #define SIGNATURE_CONTAINER 2
-#define THRESHOLD_Y 180 
-#define THRESHOLD_CONTAINER 22000
 #define DEFAULT_BLOB_SIZE 200
 #define MIN_BLOB_SIZE 10
 #define SPEED 140
@@ -54,6 +52,7 @@ State state;
 
 Servo doorservo;
 Pixy pixy;
+IRsend irsend;
 
 void setup()
 {
@@ -74,7 +73,7 @@ void setup()
   doorClosed = false;
   ballCount = 0;
   trackedBlock = -1;
-  state = BALL;
+  state = CONTAINER;
 
   closeDoor();
   pushIn();
@@ -91,6 +90,7 @@ void eStop() {
 
 void loop()
 {
+  //openContainer();
   switch(state) {
     case BALL:
       findBall();

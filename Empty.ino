@@ -3,15 +3,22 @@ void empty() {
   
   openDoor();
   pushOut();
-  moveMotor(-200, -200);
-  delay(500);
-  stopMove();
+  moveMotor(-140, -140);
+  delay(600);
+  breakMove();
+  
   closeDoor();
   moveMotor(200, 200);
   delay(500);
   breakMove();
-  delay(1000);
+
+  delay(2000);
   closeContainer();
+
+  moveMotor(-140, -140);
+  delay(600);
+  breakMove();
+  
   pushIn();
   state = HALT;
 }

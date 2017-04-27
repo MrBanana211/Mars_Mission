@@ -1,18 +1,17 @@
 void findContainer() {
   bool found = track(SIGNATURE_CONTAINER);
-  
+
   if(found){
-    if(!foundBlob)
+    if(!foundBlob) {
       breakMove();
+      openContainer();
+      openDoor();
+    }
     foundBlob = true;
           
     FollowBlock(trackedBlock);
-    
-    if(DEBUG)
-      Serial.println(blobSize);
-      
-    if(blobSize > THRESHOLD_CONTAINER){
-      //openContainer();
+    Serial.println(blob_y);
+    if( blob_y > 70 ) {
       state = EMPTY;
       if(DEBUG)
         Serial.println("CONTAINER->EMPTY");
@@ -23,9 +22,17 @@ void findContainer() {
 }
 
 void openContainer() {
-  
+  Serial.println("Opened container.");
+  for (int i = 0; i < 50; i++) {
+    irsend.sendSony(0xaaa,12);
+    delay(40);
+  }
 }
 
 void closeContainer() {
-  
+  Serial.println("Closed container.");
+  for (int i = 0; i < 5; i++) {
+    irsend.sendSony(0xbbb,12);
+    delay(40);
+  } 
 }

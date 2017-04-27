@@ -75,7 +75,6 @@ void ScanForBlocks() {
 
   if (millis() - lastMove > 20) {
     lastMove = millis();
-    
-    moveMotor(80, -80);
+    moveMotor(100, -100);
   }
 }
