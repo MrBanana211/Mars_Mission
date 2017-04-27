@@ -1,5 +1,13 @@
 void findContainer() {
-  if(track(SIGNATURE_CONTAINER)){
+  bool found = track(SIGNATURE_CONTAINER);
+  
+  if(found){
+    if(!foundBlob)
+      breakMove();
+    foundBlob = true;
+          
+    FollowBlock(trackedBlock);
+    
     if(DEBUG)
       Serial.println(blobSize);
       
@@ -9,8 +17,8 @@ void findContainer() {
       if(DEBUG)
         Serial.println("CONTAINER->EMPTY");
     }
-  } else {
-    ScanForBlocks();
+  } else if(!foundBlob) {
+      ScanForBlocks();
   }
 }
 

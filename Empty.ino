@@ -1,5 +1,6 @@
 void empty() {
-  stopMove();
+  breakMove();
+  
   openDoor();
   pushOut();
   moveMotor(-200, -200);
@@ -8,7 +9,8 @@ void empty() {
   closeDoor();
   moveMotor(200, 200);
   delay(500);
-  stopMove();
+  breakMove();
+  delay(1000);
   closeContainer();
   pushIn();
   state = HALT;

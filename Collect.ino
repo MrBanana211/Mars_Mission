@@ -1,10 +1,15 @@
 void collectBall() {
-  if(track(SIGNATURE_BALL)) {
+  bool found = track(SIGNATURE_BALL);
+  
+  if(found) {
+    FollowBlock(trackedBlock);
     openDoor();
   } else if(blob_y > 190){
       delay(500);
-      if(closeDoor())
+      if(closeDoor()) {
         ballCount++;
+        foundBlob = false;
+      }
       if(ballCount >= 3) {
         state = CONTAINER;
         if(DEBUG) {
@@ -17,50 +22,6 @@ void collectBall() {
         }
       }
   }
-}
-
-void left(int PWM) {
-  int pin1 = LOW;
-  int pin2 = LOW;
-  
-  if(PWM > 0) {
-    pin1 = HIGH;
-  } else if(PWM < 0){
-    PWM = -PWM;
-    pin2 = HIGH;
-  }
-  PWM = constrain(PWM, 0, 255);
-  
-  digitalWrite(motorL1, pin1);
-  digitalWrite(motorL2, pin2);
-  analogWrite(motorLPWM, PWM);
-}
-
-void right(int PWM) {
-  int pin1 = LOW;
-  int pin2 = LOW;
-  
-  if(PWM > 0) {
-    pin1 = HIGH;
-  } else if(PWM < 0){
-    PWM = -PWM;
-    pin2 = HIGH;
-  }
-  PWM = constrain(PWM, 0, 255);
-  
-  digitalWrite(motorR1, pin1);
-  digitalWrite(motorR2, pin2);
-  analogWrite(motorRPWM, PWM);
-}
-
-void moveMotor(int leftPWM, int rightPWM) {
-  left(leftPWM);
-  right(rightPWM);
-}
-
-
-void stopMove() {
-  moveMotor(0, 0);
 }
 
 
