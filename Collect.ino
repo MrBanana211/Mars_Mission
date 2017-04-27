@@ -10,7 +10,7 @@ void collectBall() {
         ballCount++;
         foundBlob = false;
       }
-      if(ballCount >= 3) {
+      if(ballCount >= 2) {
         state = CONTAINER;
         if(DEBUG) {
           Serial.println("COLLECT >>> CONTAINER");

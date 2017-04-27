@@ -72,9 +72,88 @@ void FollowBlock(int trackedBlock) {
 
 void ScanForBlocks() {
   static uint32_t lastMove = 0L;
-
+  static uint32_t lastStraight = 0L;
+  static int forwardCount = 0;
+  
   if (millis() - lastMove > 20) {
+    int frontDist = analogRead(irFront);
+    int rightDist = analogRead(irRight);
     lastMove = millis();
-    moveMotor(100, -100);
+    
+
+    if(rightDist > 500) {
+      dir = LEFT;
+    } else {
+      if(dir == LEFT) {
+        dir = FORWARD;
+      } else if(millis() - lastStraight > 2000){
+        {
+          if(forwardCount < 10) {
+            forwardCount++;
+            dir = FORWARD;
+          }
+          else {
+            dir = RIGHT;
+            forwardCount = 0;
+            lastStraight = millis();
+          }
+        }
+      } else{
+        dir = RIGHT;
+      }
+    }
+     
+
+    if(frontDist > 500) {
+      dir = BACKWARD;
+      forwardCount = 0; 
+      lastStraight = millis();
+    }
+    switch(dir) {
+      case FORWARD:
+        moveMotor(160, 160);
+        break;
+      case LEFT:
+        moveMotor(-100, 100);
+        break;
+      case RIGHT:
+        moveMotor(100, -100);
+        break;
+      case BACKWARD:
+        moveMotor(-200, -200);
+        break;
+    }
   }
+  /*
+
+  static uint32_t lastMove = 0L;
+  int leftSpeed = 100;
+  int rightSpeed = -100;
+  
+  if (millis() - lastMove > 20) {
+    if(millis() - lastStraight > 3000) {
+      lastStraight = millis();
+      leftSpeed = 140;
+      rightSpeed = 140;
+    }
+    
+    lastMove = millis();
+
+    if(getRightDistance() > 500) {
+      //Right obstacle
+      leftSpeed = -1;
+      rightSpeed = 140;
+      delay(100);
+    }
+
+    if(getFrontDistance() > 500) {
+      //Front obstacle
+      leftSpeed = -140;
+      rightSpeed = -140;
+      lastStraight = millis();
+    }
+    
+    moveMotor(leftSpeed, rightSpeed);
+  }
+*/
 }

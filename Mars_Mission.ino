@@ -27,6 +27,9 @@ const int motorRPWM = 11;
 const int switchF = 3;
 const int switchR = 4;
 
+const int irFront = 0;
+const int irRight = 7;
+
 const int interruptPin = 2;
 
 bool started;
@@ -46,9 +49,15 @@ enum State {
     CONTAINER,
     EMPTY,
     HALT
-  };
- // add a comment
-State state;
+  } state;
+
+enum Dir {
+    FORWARD,
+    LEFT,
+    RIGHT,
+    BACKWARD
+} dir;
+
 
 Servo doorservo;
 Pixy pixy;
@@ -73,8 +82,9 @@ void setup()
   doorClosed = false;
   ballCount = 0;
   trackedBlock = -1;
-  state = CONTAINER;
-
+  state = BALL;
+  dir = FORWARD;
+  
   closeDoor();
   pushIn();
   stopMove();
@@ -90,7 +100,6 @@ void eStop() {
 
 void loop()
 {
-  //openContainer();
   switch(state) {
     case BALL:
       findBall();

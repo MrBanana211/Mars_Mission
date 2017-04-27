@@ -11,7 +11,7 @@ void findContainer() {
           
     FollowBlock(trackedBlock);
     Serial.println(blob_y);
-    if( blob_y > 70 ) {
+    if( blob_y > 100 ) {
       state = EMPTY;
       if(DEBUG)
         Serial.println("CONTAINER->EMPTY");

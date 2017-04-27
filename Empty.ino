@@ -10,14 +10,16 @@ void empty() {
   closeDoor();
   moveMotor(200, 200);
   delay(500);
-  breakMove();
+  stopMove();
 
-  delay(2000);
-  closeContainer();
+  
 
   moveMotor(-140, -140);
   delay(600);
   breakMove();
+
+  delay(1000);
+  closeContainer();
   
   pushIn();
   state = HALT;
